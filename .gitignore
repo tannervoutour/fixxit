@@ -118,7 +118,6 @@ test-results/
 
 # Claude Code specific
 .claude/
-CLAUDE_KEEPUP.md
 
 # MCP specific
 mcp_config.json
