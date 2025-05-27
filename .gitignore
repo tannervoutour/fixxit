@@ -1,0 +1,130 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+python-sdk/.venv/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sqlite
+*.sqlite3
+*.db
+database_bombzone/*.db
+database_bombzone/*.sqlite
+
+# Environment variables and secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.key
+*.pem
+config.json
+secrets.json
+
+# Node.js (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Machine documentation sensitive files
+database_bombzone/Machines/
+archive/sensitive/
+backup/
+
+# Model and embedding files
+*.model
+*.bin
+embeddings/
+models/
+
+# Large files and downloads
+*.zip
+*.tar.gz
+*.rar
+downloads/
+
+# Runtime files
+*.pid
+*.lock
+
+# Documentation builds
+docs/_build/
+docs/site/
+
+# Testing
+.tox/
+.coverage
+.pytest_cache/
+test-results/
+
+# Claude Code specific
+.claude/
+CLAUDE_KEEPUP.md
+
+# MCP specific
+mcp_config.json
+server_logs/
+
+# AI model cache
+.cache/
+transformers_cache/
+sentence_transformers/

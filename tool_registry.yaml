@@ -1,0 +1,171 @@
+# Tool Registry - Master catalog of all available tools
+# This file defines all possible tools that can be made available to the AI
+# Tool visibility is controlled by tool_config.env
+
+tools:
+  # Equipment Management Tools
+  search_equipment:
+    enabled_by: "TOOL_SEARCH_EQUIPMENT"
+    description: "Searches and retrieves machines and equipment from the database. Can filter by location, status, model, or manufacturer."
+    mcp_function: "find_machines"
+    category: "equipment"
+    parameters:
+      location:
+        type: "string"
+        description: "Filter by machine location (e.g., 'Building A', 'Floor 1', 'Shipping'). Supports partial matching."
+      status:
+        type: "string"
+        enum: ["operational", "maintenance", "down", "retired"]
+        description: "Filter by machine status. Use 'down' for broken machines, 'maintenance' for scheduled work."
+      model:
+        type: "string"
+        description: "Filter by machine model (e.g., 'CNC-X200', 'PRESS-H500'). Supports partial matching."
+      manufacturer:
+        type: "string"
+        description: "Filter by manufacturer name (e.g., 'Haas', 'Hydraulic Systems'). Supports partial matching."
+
+  # Maintenance Ticket Tools
+  get_maintenance_tickets:
+    enabled_by: "TOOL_MAINTENANCE_TICKETS"
+    description: "Retrieves trouble tickets and maintenance requests from the system. Returns ticket details including status, priority, and machine information."
+    mcp_function: "get_tickets"
+    category: "maintenance"
+    parameters:
+      status:
+        type: "string"
+        enum: ["open", "assigned", "in_progress", "resolved", "closed"]
+        description: "Filter by ticket status. Use 'open' for new issues, 'in_progress' for active work."
+      priority:
+        type: "string"
+        enum: ["low", "medium", "high", "urgent"]
+        description: "Filter by priority level. 'urgent' for critical issues requiring immediate attention."
+      machine_id:
+        type: "integer"
+        description: "Filter by specific machine ID when you know which machine the user is asking about."
+      limit:
+        type: "integer"
+        default: 50
+        description: "Maximum number of tickets to return (default 50)."
+
+  # Service History Tools
+  get_service_history:
+    enabled_by: "TOOL_SERVICE_HISTORY"
+    description: "Retrieves maintenance history and service records from the database. Shows past work performed on machines by technicians."
+    mcp_function: "get_maintenance_records"
+    category: "maintenance"
+    parameters:
+      machine_id:
+        type: "integer"
+        description: "Get history for a specific machine ID."
+      technician_id:
+        type: "integer"
+        description: "Get history for work performed by a specific technician."
+      maintenance_type:
+        type: "string"
+        enum: ["preventive", "corrective", "emergency", "inspection"]
+        description: "Filter by maintenance type. 'emergency' for urgent repairs, 'preventive' for scheduled maintenance."
+      days_back:
+        type: "integer"
+        default: 30
+        description: "How many days back to look for maintenance records (default 30 days)."
+
+  # Parts Inventory Tools
+  search_parts_inventory:
+    enabled_by: "TOOL_PARTS_INVENTORY"
+    description: "Searches parts inventory and returns stock information. Can find parts by number, name, or compatible machine model."
+    mcp_function: "find_parts"
+    category: "inventory"
+    parameters:
+      part_number:
+        type: "string"
+        description: "Search by part number (supports partial matching)."
+      name:
+        type: "string"
+        description: "Search by part name or description (supports partial matching)."
+      compatible_model:
+        type: "string"
+        description: "Find parts compatible with a specific machine model."
+      low_stock_only:
+        type: "boolean"
+        default: false
+        description: "Set to true to show only parts below minimum stock level."
+
+  # Troubleshooting Tools
+  get_troubleshooting_help:
+    enabled_by: "TOOL_TROUBLESHOOTING"
+    description: "Retrieves fault code definitions and troubleshooting procedures from the maintenance system."
+    mcp_function: "lookup_fault_code"
+    category: "troubleshooting"
+    parameters:
+      fault_code:
+        type: "string"
+        description: "Specific fault code to look up (e.g., 'E001', 'H001'). If not provided, returns all fault codes."
+
+  # Technician Management Tools
+  get_technician_info:
+    enabled_by: "TOOL_TECHNICIAN_INFO"
+    description: "Retrieves technician information including expertise areas, experience levels, and contact details."
+    mcp_function: "get_technician_details"
+    category: "personnel"
+    parameters:
+      technician_id:
+        type: "integer"
+        description: "Get information for a specific technician ID. If not provided, returns all technicians."
+
+  # Database Query Tools
+  query_maintenance_database:
+    enabled_by: "TOOL_DATABASE_QUERY"
+    description: "Executes custom SQL SELECT queries against the maintenance database. Provides access to complex data relationships and custom filtering."
+    mcp_function: "execute_sql_query"
+    category: "database"
+    parameters:
+      query:
+        type: "string"
+        description: "SQL SELECT query to execute. Must be a valid SELECT statement."
+        required: true
+      limit:
+        type: "integer"
+        default: 100
+        description: "Maximum number of rows to return (default 100, max 1000)."
+
+  # System Overview Tools
+  get_database_overview:
+    enabled_by: "TOOL_SYSTEM_OVERVIEW"
+    description: "Provides high-level summary statistics and system health dashboard for the maintenance database."
+    mcp_function: "get_stats"
+    category: "system"
+    parameters: {}
+
+# Tool Categories for bulk management
+categories:
+  equipment:
+    description: "Machine and equipment management tools"
+    tools: ["search_equipment"]
+  
+  maintenance:
+    description: "Maintenance tickets and service history tools"
+    tools: ["get_maintenance_tickets", "get_service_history"]
+  
+  inventory:
+    description: "Parts and inventory management tools"
+    tools: ["search_parts_inventory"]
+  
+  troubleshooting:
+    description: "Fault diagnosis and troubleshooting tools"
+    tools: ["get_troubleshooting_help"]
+  
+  personnel:
+    description: "Technician and staff management tools"
+    tools: ["get_technician_info"]
+  
+  database:
+    description: "Direct database access and custom query tools"
+    tools: ["query_maintenance_database"]
+  
+  system:
+    description: "System monitoring and overview tools"
+    tools: ["get_database_overview"]
+
+# Special tools that are always available
+always_available:
+  - "answer_user_query"  # AI decision completion function
