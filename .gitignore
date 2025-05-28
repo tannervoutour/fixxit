@@ -87,8 +87,13 @@ Thumbs.db
 
 # Machine documentation sensitive files
 database_bombzone/Machines/
+Machines/
 archive/sensitive/
 backup/
+# Database files
+*.db
+*.sqlite
+*.sqlite3
 
 # Model and embedding files
 *.model

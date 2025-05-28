@@ -27,6 +27,7 @@ class ClientConfig:
     # Conversation settings
     MAX_CONVERSATION_HISTORY = 20  # messages to keep in memory
     CONTEXT_RETENTION_TURNS = 5  # how many turns to remember entities
+    MAX_TOOL_ITERATIONS = 20  # maximum tool calls per query (increased for complex documentation queries)
     
     # Response formatting
     ENABLE_RICH_FORMATTING = True

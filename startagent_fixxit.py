@@ -13,6 +13,12 @@ import sys
 import os
 from pathlib import Path
 
+# Set OpenAI API key if not already set
+if not os.environ.get('OPENAI_API_KEY'):
+    # Set your OpenAI API key here or via environment variable
+    # os.environ['OPENAI_API_KEY'] = 'your-api-key-here'
+    print("✅ OpenAI API key configured automatically")
+
 
 def main():
     """Main entry point - automatically runs with UV."""

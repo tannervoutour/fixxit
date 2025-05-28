@@ -3,119 +3,95 @@
 # Tool visibility is controlled by tool_config.env
 
 tools:
-  # Equipment Management Tools
-  search_equipment:
-    enabled_by: "TOOL_SEARCH_EQUIPMENT"
-    description: "Searches and retrieves machines and equipment from the database. Can filter by location, status, model, or manufacturer."
-    mcp_function: "find_machines"
-    category: "equipment"
+  # Machine Documentation Search
+  search_machine_documentation:
+    enabled_by: "TOOL_MACHINE_DOCS"
+    description: "Searches for machines and their available documentation. Can filter by machine name, line number, or machine type."
+    mcp_function: "search_machine_docs"
+    category: "documentation"
     parameters:
-      location:
+      machine_name:
         type: "string"
-        description: "Filter by machine location (e.g., 'Building A', 'Floor 1', 'Shipping'). Supports partial matching."
-      status:
+        description: "Specific machine name (e.g., 'CSP', 'Feeder', 'Folder'). Supports partial matching."
+      line_number:
         type: "string"
-        enum: ["operational", "maintenance", "down", "retired"]
-        description: "Filter by machine status. Use 'down' for broken machines, 'maintenance' for scheduled work."
-      model:
+        enum: ["Line_1", "Line_2", "Line_3", "Line_4", "General"]
+        description: "Line designation for production line machines."
+      machine_type:
         type: "string"
-        description: "Filter by machine model (e.g., 'CNC-X200', 'PRESS-H500'). Supports partial matching."
-      manufacturer:
-        type: "string"
-        description: "Filter by manufacturer name (e.g., 'Haas', 'Hydraulic Systems'). Supports partial matching."
+        enum: ["separator", "feeder", "folder", "ironer", "dryer", "press", "picker", "conveyor", "washer"]
+        description: "Type of machine to filter by."
 
-  # Maintenance Ticket Tools
-  get_maintenance_tickets:
-    enabled_by: "TOOL_MAINTENANCE_TICKETS"
-    description: "Retrieves trouble tickets and maintenance requests from the system. Returns ticket details including status, priority, and machine information."
-    mcp_function: "get_tickets"
-    category: "maintenance"
+  # Manual Section Retrieval
+  get_manual_sections:
+    enabled_by: "TOOL_MANUAL_SECTIONS"
+    description: "Retrieves available sections from machine manuals. Shows section names, page numbers, and content summaries."
+    mcp_function: "get_sections"
+    category: "documentation"
     parameters:
-      status:
+      machine_name:
         type: "string"
-        enum: ["open", "assigned", "in_progress", "resolved", "closed"]
-        description: "Filter by ticket status. Use 'open' for new issues, 'in_progress' for active work."
-      priority:
+        description: "Machine to search for (e.g., 'CSP', 'PowerPress')."
+      section_name:
         type: "string"
-        enum: ["low", "medium", "high", "urgent"]
-        description: "Filter by priority level. 'urgent' for critical issues requiring immediate attention."
-      machine_id:
-        type: "integer"
-        description: "Filter by specific machine ID when you know which machine the user is asking about."
-      limit:
-        type: "integer"
-        default: 50
-        description: "Maximum number of tickets to return (default 50)."
+        description: "Specific section name to filter by (e.g., 'Safety', 'Operation', 'Troubleshooting')."
+      document_filename:
+        type: "string"
+        description: "Specific document filename to filter by."
 
-  # Service History Tools
-  get_service_history:
-    enabled_by: "TOOL_SERVICE_HISTORY"
-    description: "Retrieves maintenance history and service records from the database. Shows past work performed on machines by technicians."
-    mcp_function: "get_maintenance_records"
-    category: "maintenance"
-    parameters:
-      machine_id:
-        type: "integer"
-        description: "Get history for a specific machine ID."
-      technician_id:
-        type: "integer"
-        description: "Get history for work performed by a specific technician."
-      maintenance_type:
-        type: "string"
-        enum: ["preventive", "corrective", "emergency", "inspection"]
-        description: "Filter by maintenance type. 'emergency' for urgent repairs, 'preventive' for scheduled maintenance."
-      days_back:
-        type: "integer"
-        default: 30
-        description: "How many days back to look for maintenance records (default 30 days)."
-
-  # Parts Inventory Tools
-  search_parts_inventory:
-    enabled_by: "TOOL_PARTS_INVENTORY"
-    description: "Searches parts inventory and returns stock information. Can find parts by number, name, or compatible machine model."
-    mcp_function: "find_parts"
-    category: "inventory"
-    parameters:
-      part_number:
-        type: "string"
-        description: "Search by part number (supports partial matching)."
-      name:
-        type: "string"
-        description: "Search by part name or description (supports partial matching)."
-      compatible_model:
-        type: "string"
-        description: "Find parts compatible with a specific machine model."
-      low_stock_only:
-        type: "boolean"
-        default: false
-        description: "Set to true to show only parts below minimum stock level."
-
-  # Troubleshooting Tools
-  get_troubleshooting_help:
+  # Troubleshooting Information Search
+  find_troubleshooting_procedures:
     enabled_by: "TOOL_TROUBLESHOOTING"
-    description: "Retrieves fault code definitions and troubleshooting procedures from the maintenance system."
-    mcp_function: "lookup_fault_code"
+    description: "Searches for troubleshooting information in documentation sections. Uses full-text search across manual content."
+    mcp_function: "find_troubleshooting"
     category: "troubleshooting"
     parameters:
-      fault_code:
+      search_query:
         type: "string"
-        description: "Specific fault code to look up (e.g., 'E001', 'H001'). If not provided, returns all fault codes."
+        description: "Search terms (error symptoms, part names, procedures, etc.). Use specific keywords for best results."
+        required: true
+      machine_name:
+        type: "string"
+        description: "Limit search to specific machine to narrow results."
 
-  # Technician Management Tools
-  get_technician_info:
-    enabled_by: "TOOL_TECHNICIAN_INFO"
-    description: "Retrieves technician information including expertise areas, experience levels, and contact details."
-    mcp_function: "get_technician_details"
-    category: "personnel"
+  # Section Content Retrieval
+  get_section_content:
+    enabled_by: "TOOL_SECTION_CONTENT"
+    description: "Retrieves the full content of a specific manual section. Returns complete text with page references."
+    mcp_function: "get_section_text"
+    category: "documentation"
     parameters:
-      technician_id:
-        type: "integer"
-        description: "Get information for a specific technician ID. If not provided, returns all technicians."
+      machine_name:
+        type: "string"
+        description: "Name of the machine (must be exact match)."
+        required: true
+      section_name:
+        type: "string"
+        description: "Name of the section to retrieve (e.g., 'Safety', 'Operation')."
+        required: true
+      document_filename:
+        type: "string"
+        description: "Specific document if machine has multiple manuals."
 
-  # Database Query Tools
-  query_maintenance_database:
+  # Procedure Search
+  search_procedures:
+    enabled_by: "TOOL_PROCEDURES"
+    description: "Searches for specific types of procedures across all documentation. Finds safety, operation, maintenance procedures."
+    mcp_function: "search_manual_procedures"
+    category: "procedures"
+    parameters:
+      procedure_type:
+        type: "string"
+        description: "Type of procedure to search for (e.g., 'safety', 'operation', 'maintenance', 'installation')."
+        required: true
+      machine_name:
+        type: "string"
+        description: "Limit search to specific machine."
+
+  # Database Query Tools (for advanced queries)
+  query_documentation_database:
     enabled_by: "TOOL_DATABASE_QUERY"
-    description: "Executes custom SQL SELECT queries against the maintenance database. Provides access to complex data relationships and custom filtering."
+    description: "Executes custom SQL SELECT queries against the documentation database. Provides access to complex data relationships."
     mcp_function: "execute_sql_query"
     category: "database"
     parameters:
@@ -129,42 +105,34 @@ tools:
         description: "Maximum number of rows to return (default 100, max 1000)."
 
   # System Overview Tools
-  get_database_overview:
+  get_documentation_overview:
     enabled_by: "TOOL_SYSTEM_OVERVIEW"
-    description: "Provides high-level summary statistics and system health dashboard for the maintenance database."
+    description: "Provides high-level summary of the documentation database including machine count, document processing status."
     mcp_function: "get_stats"
     category: "system"
     parameters: {}
 
 # Tool Categories for bulk management
 categories:
-  equipment:
-    description: "Machine and equipment management tools"
-    tools: ["search_equipment"]
-  
-  maintenance:
-    description: "Maintenance tickets and service history tools"
-    tools: ["get_maintenance_tickets", "get_service_history"]
-  
-  inventory:
-    description: "Parts and inventory management tools"
-    tools: ["search_parts_inventory"]
+  documentation:
+    description: "Machine documentation and manual access tools"
+    tools: ["search_machine_documentation", "get_manual_sections"]
   
   troubleshooting:
-    description: "Fault diagnosis and troubleshooting tools"
-    tools: ["get_troubleshooting_help"]
+    description: "Troubleshooting and problem-solving tools"
+    tools: ["find_troubleshooting_procedures"]
   
-  personnel:
-    description: "Technician and staff management tools"
-    tools: ["get_technician_info"]
+  procedures:
+    description: "Procedure and instruction lookup tools"
+    tools: ["search_procedures", "get_section_content"]
   
   database:
     description: "Direct database access and custom query tools"
-    tools: ["query_maintenance_database"]
+    tools: ["query_documentation_database"]
   
   system:
     description: "System monitoring and overview tools"
-    tools: ["get_database_overview"]
+    tools: ["get_documentation_overview"]
 
 # Special tools that are always available
 always_available:

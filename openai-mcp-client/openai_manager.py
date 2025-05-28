@@ -40,6 +40,7 @@ class OpenAIManager:
             self.function_definitions = FunctionDefinitions.get_all_functions()
             enabled_count = len(self.function_definitions)
             self.logger.info(f"✅ OpenAI client initialized with {enabled_count} tools")
+            self.logger.info(f"🔧 Max tool iterations per query: {config.MAX_TOOL_ITERATIONS}")
             
             # Connect to MCP bridge
             if not await mcp_bridge.connect():
@@ -93,7 +94,7 @@ class OpenAIManager:
     
     async def _iterative_tool_loop(self, context: List[Dict[str, Any]]) -> str:
         """Run iterative tool calling loop until AI provides final answer."""
-        max_iterations = 5  # Prevent infinite loops
+        max_iterations = config.MAX_TOOL_ITERATIONS  # Prevent infinite loops - configurable
         iteration = 0
         
         while iteration < max_iterations:
