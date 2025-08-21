@@ -1,4 +1,4 @@
-openwebui-env/
+# System files
 .cache/
 .config/
 .java/
@@ -9,6 +9,21 @@ openwebui-env/
 .bashrc
 .profile
 .sudo_as_admin_successful
-.webui_secret_key
 .claude.json
 .claude/
+
+# Virtual environment
+openwebui-env/
+
+# Logs and runtime files
+*.log
+nohup.out
+.webui_secret_key
+
+# Database files
+*.db
+*.sqlite3
+
+# Cache directories
+__pycache__/
+*.pyc
