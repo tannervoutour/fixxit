@@ -1,0 +1,14 @@
+openwebui-env/
+.cache/
+.config/
+.java/
+.npm/
+.ssh/
+.bash_history
+.bash_logout
+.bashrc
+.profile
+.sudo_as_admin_successful
+.webui_secret_key
+.claude.json
+.claude/
