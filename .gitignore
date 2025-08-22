@@ -1,22 +1,25 @@
 # Ignore everything at the root level
 /*
 
-# But keep the open_webui directory and its contents
-!/open_webui/
+# But keep the virtual environment
+!/openwebui-env/
+# And specifically keep only the open_webui package
+openwebui-env/*
+!openwebui-env/lib/
+openwebui-env/lib/*
+!openwebui-env/lib/python3.12/
+openwebui-env/lib/python3.12/*
+!openwebui-env/lib/python3.12/site-packages/
+openwebui-env/lib/python3.12/site-packages/*
+!openwebui-env/lib/python3.12/site-packages/open_webui/
 
 # Also keep git files and this gitignore
 !.git*
 !.gitignore
 
-# Ignore sensitive files within open_webui
-open_webui/data/
-open_webui/__pycache__/
-open_webui/*/__pycache__/
-open_webui/*/*/__pycache__/
-open_webui/*/*/*/__pycache__/
-open_webui/*/*/*/*/__pycache__/
-open_webui/**/__pycache__/
-open_webui/.webui_secret_key
+# Ignore sensitive files within the package
+openwebui-env/lib/python3.12/site-packages/open_webui/**/__pycache__/
+openwebui-env/lib/python3.12/site-packages/open_webui/**/data/
 *.db
 *.sqlite3
 *.pyc
