@@ -1,29 +1,22 @@
-# System files
-.cache/
-.config/
-.java/
-.npm/
-.ssh/
-.bash_history
-.bash_logout
-.bashrc
-.profile
-.sudo_as_admin_successful
-.claude.json
-.claude/
+# Ignore everything at the root level
+/*
 
-# Virtual environment
-openwebui-env/
+# But keep the open_webui directory and its contents
+!/open_webui/
 
-# Logs and runtime files
-*.log
-nohup.out
-.webui_secret_key
+# Also keep git files and this gitignore
+!.git*
+!.gitignore
 
-# Database files
+# Ignore sensitive files within open_webui
+open_webui/data/
+open_webui/__pycache__/
+open_webui/*/__pycache__/
+open_webui/*/*/__pycache__/
+open_webui/*/*/*/__pycache__/
+open_webui/*/*/*/*/__pycache__/
+open_webui/**/__pycache__/
+open_webui/.webui_secret_key
 *.db
 *.sqlite3
-
-# Cache directories
-__pycache__/
 *.pyc
