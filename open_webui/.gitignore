@@ -1,0 +1,10 @@
+# Ignore everything at the root level
+/*
+
+# But keep the open_webui directory
+!/open_webui/
+
+# Also keep git files and this gitignore
+!.git*
+!README.md
+!LICENSE
